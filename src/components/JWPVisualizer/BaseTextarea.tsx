@@ -51,7 +51,6 @@ export const BaseTextarea = ({
       rows={minRows}
       onChange={(e) => {
         onChange?.(e.target.value);
-        console.log(e.target.value);
         adjustHeight();
       }}
     >

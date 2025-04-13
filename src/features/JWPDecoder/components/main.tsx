@@ -1,5 +1,6 @@
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSelectIssuedOrPresented } from "../hooks/useSelectIssuedOrPresented";
+import { useValidateResult } from "../hooks/useValidateResult";
 import { JWPInput } from "./JWPInput";
 import { JWPOutput } from "./JWPOutput";
 import { PubKeyInput } from "./PubKeyInput";
@@ -8,6 +9,11 @@ export const JWPDecoder = () => {
   const isMobile = useIsMobile();
   const { issuedOrPresented, handleSelectIssuedOrPresented } =
     useSelectIssuedOrPresented();
+  const { getIssuedFormattedData, getPresentedFormattedData } =
+    useValidateResult();
+  const issuedData = getIssuedFormattedData();
+  const presentedData = getPresentedFormattedData();
+
   return (
     <div>
       <div className="font-light16 text-sm mb-4">
@@ -21,6 +27,18 @@ export const JWPDecoder = () => {
             isMobile={isMobile}
             issuedOrPresented={issuedOrPresented}
             handleSelectIssuedOrPresented={handleSelectIssuedOrPresented}
+            isseuedFormStatus={{
+              isValid: issuedData.isValid,
+              validationError: issuedData.validationError,
+              isVerified: false,
+              verificationError: "Not implemented yet",
+            }}
+            presentedFormStatus={{
+              isValid: presentedData.isValid,
+              validationError: presentedData.validationError,
+              isVerified: false,
+              verificationError: "Not implemented yet",
+            }}
           />
         </div>
         <div
@@ -28,14 +46,29 @@ export const JWPDecoder = () => {
         >
           {issuedOrPresented === "issued" ? (
             <>
-              <JWPOutput title="DECODED ISSUER PROTECTED HEADER" />
-              <JWPOutput title="DECODED ISSUER PAYLOADS" />
+              <JWPOutput
+                title="DECODED ISSUER PROTECTED HEADER"
+                encodedValue={issuedData.header}
+              />
+              <JWPOutput
+                title="DECODED ISSUER PAYLOADS"
+                encodedValue={issuedData.payloads}
+              />
             </>
           ) : (
             <>
-              <JWPOutput title="DECODED PRESENTED PROTECTED HEADER" />
-              <JWPOutput title="DECODED ISSUER PROTECTED HEADER" />
-              <JWPOutput title="DECODED PRESENTATION PAYLOADS" />
+              <JWPOutput
+                title="DECODED ISSUER PROTECTED HEADER"
+                encodedValue={presentedData.issuerHeader}
+              />
+              <JWPOutput
+                title="DECODED PRESENTED PROTECTED HEADER"
+                encodedValue={presentedData.presentationHeader}
+              />
+              <JWPOutput
+                title="DECODED PRESENTATION PAYLOADS"
+                encodedValue={presentedData.payloads}
+              />
             </>
           )}
           <PubKeyInput

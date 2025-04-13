@@ -3,7 +3,7 @@ import { BaseCard } from "./BaseCard";
 type CardWithTabsTitleProps = {
   activeTabKey: string;
   tabTitles: Record<string, string>;
-  onTabClick: (tabTitle: string) => void;
+  onTabClick?: (tabTitle: string) => void;
   disabled?: boolean;
   children: React.ReactNode;
 };
@@ -11,7 +11,7 @@ type CardWithTabsTitleProps = {
 export const CardWithTabsTitle: React.FC<CardWithTabsTitleProps> = ({
   activeTabKey,
   tabTitles,
-  onTabClick,
+  onTabClick = () => {},
   disabled = false,
   children,
 }) => {

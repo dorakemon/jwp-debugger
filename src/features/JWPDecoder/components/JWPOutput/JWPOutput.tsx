@@ -4,6 +4,10 @@ import { OutputJSONOrTable } from "../../constants";
 type JWPOutputProps = {
   title: string;
   encodedValue?: string;
+  isValid?: boolean;
+  validationError?: string;
+  isVerified?: boolean;
+  verificationError?: string;
 };
 
 export const JWPOutput = ({ title, encodedValue }: JWPOutputProps) => {
@@ -14,10 +18,15 @@ export const JWPOutput = ({ title, encodedValue }: JWPOutputProps) => {
         <CardWithTabsTitle
           activeTabKey="json"
           tabTitles={OutputJSONOrTable}
-          onTabClick={() => {}}
           disabled
         >
-          {encodedValue && <div>{encodedValue}</div>}
+          <div className="p-4">
+            {encodedValue && (
+              <pre className="text-sm whitespace-pre overflow-x-auto">
+                {encodedValue}
+              </pre>
+            )}
+          </div>
         </CardWithTabsTitle>
       </div>
     </div>

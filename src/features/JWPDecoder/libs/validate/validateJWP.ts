@@ -5,8 +5,8 @@ type ParsedFullResult = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   presentationProtectedHeader: Record<string, any>;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  issuedProtectedHeader: Record<string, any>;
-  issuedPayload: {
+  issuerProtectedHeader: Record<string, any>;
+  payload: {
     raw: string;
     decoded: string;
     claim: string;
@@ -14,12 +14,15 @@ type ParsedFullResult = {
   proof: string;
 };
 
-export type ValidateResult =
+export type IssuedFormJWPResult =
   | {
       success: true;
       type: "issued";
       parsedResult: Omit<ParsedFullResult, "presentationProtectedHeader">;
     }
+  | { success: false; message: string };
+
+export type PresentedFormJWPResult =
   | {
       success: true;
       type: "presented";
@@ -28,34 +31,19 @@ export type ValidateResult =
   | { success: false; message: string };
 
 /**
- * Validate JWP
+ * Validate IssuedForm JWP
  */
-export const validateJWP = (
-  type: "issued" | "presented",
-  jwp: string,
-): ValidateResult => {
+export const validateIssuedForm = (jwp: string): IssuedFormJWPResult => {
   const parts = jwp.split(".");
 
   // Check if the JWP has the correct number of parts
-  if (
-    (type === "issued" && parts.length !== 3) ||
-    (type === "presented" && parts.length !== 4)
-  ) {
+  if (parts.length !== 3) {
     return {
       success: false,
-      message: `Invalid JWP format: Expected ${type === "issued" ? "three" : "four"} parts separated by dots`,
+      message: "Invalid JWP format: Expected three parts separated by dots",
     };
   }
 
-  return type === "issued"
-    ? validateIssuedForm(parts)
-    : validatePresentedForm(parts);
-};
-
-/**
- * Validate IssuedForm JWP
- */
-const validateIssuedForm = (parts: string[]): ValidateResult => {
   const [headerBase64, payloadBase64, proof] = parts;
 
   // Validate issued header
@@ -77,8 +65,8 @@ const validateIssuedForm = (parts: string[]): ValidateResult => {
     success: true,
     type: "issued",
     parsedResult: {
-      issuedProtectedHeader: headerResult.header,
-      issuedPayload: payloadResult.payloads,
+      issuerProtectedHeader: headerResult.header,
+      payload: payloadResult.payloads,
       proof,
     },
   };
@@ -87,7 +75,17 @@ const validateIssuedForm = (parts: string[]): ValidateResult => {
 /**
  * Validate PresentedForm JWP
  */
-const validatePresentedForm = (parts: string[]): ValidateResult => {
+export const validatePresentedForm = (jwp: string): PresentedFormJWPResult => {
+  const parts = jwp.split(".");
+
+  // Check if the JWP has the correct number of parts
+  if (parts.length !== 4) {
+    return {
+      success: false,
+      message: "Invalid JWP format: Expected four parts separated by dots",
+    };
+  }
+
   const [issuedHeaderBase64, presentHeaderBase64, payloadBase64, proof] = parts;
 
   // Validate presentation header
@@ -99,6 +97,7 @@ const validatePresentedForm = (parts: string[]): ValidateResult => {
       message: presentHeaderResult.message,
     };
   }
+
   // Validate issued header
   const issuedHeaderResult = validateIssuerProtectedHeader(issuedHeaderBase64);
   if (!issuedHeaderResult.success) {
@@ -107,6 +106,7 @@ const validatePresentedForm = (parts: string[]): ValidateResult => {
       message: issuedHeaderResult.message,
     };
   }
+
   // Validate payload
   const payloadResult = validatePayload(
     payloadBase64,
@@ -115,14 +115,15 @@ const validatePresentedForm = (parts: string[]): ValidateResult => {
   if (!payloadResult.success) {
     return { success: false, message: payloadResult.message };
   }
+
   // Validation successful
   return {
     success: true,
     type: "presented",
     parsedResult: {
       presentationProtectedHeader: presentHeaderResult.header,
-      issuedProtectedHeader: issuedHeaderResult.header,
-      issuedPayload: payloadResult.payloads,
+      issuerProtectedHeader: issuedHeaderResult.header,
+      payload: payloadResult.payloads,
       proof,
     },
   };

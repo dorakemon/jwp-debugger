@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateJWP } from "./validateJWP";
+import { validateIssuedForm, validatePresentedForm } from "./validateJWP";
 
 describe("validateJWP", () => {
   // Valid JWP token samples
@@ -11,7 +11,7 @@ describe("validateJWP", () => {
 
   describe("Issued JWP validation", () => {
     it("should validate a properly formatted issued JWP token", () => {
-      const result = validateJWP("issued", validIssuedJwp);
+      const result = validateIssuedForm(validIssuedJwp);
 
       // Verify basic structure
       expect(result.success).toBe(true);
@@ -19,25 +19,25 @@ describe("validateJWP", () => {
       if (result.success) {
         expect(result.type).toBe("issued");
         // Verify issuer header
-        expect(result.parsedResult.issuedProtectedHeader).toBeDefined();
-        expect(result.parsedResult.issuedProtectedHeader.typ).toBe("JPT");
-        expect(result.parsedResult.issuedProtectedHeader.alg).toBe("BBS");
-        expect(result.parsedResult.issuedProtectedHeader.claims).toBeInstanceOf(
+        expect(result.parsedResult.issuerProtectedHeader).toBeDefined();
+        expect(result.parsedResult.issuerProtectedHeader.typ).toBe("JPT");
+        expect(result.parsedResult.issuerProtectedHeader.alg).toBe("BBS");
+        expect(result.parsedResult.issuerProtectedHeader.claims).toBeInstanceOf(
           Array,
         );
-        expect(result.parsedResult.issuedProtectedHeader.claims).toHaveLength(
+        expect(result.parsedResult.issuerProtectedHeader.claims).toHaveLength(
           6,
         );
 
         // Verify payloads
-        expect(result.parsedResult.issuedPayload).toHaveLength(6);
+        expect(result.parsedResult.payload).toHaveLength(6);
 
         // Verify specific claim values (removing quotes)
-        const firstClaim = result.parsedResult.issuedPayload[0];
+        const firstClaim = result.parsedResult.payload[0];
         expect(firstClaim.claim).toBe("iss");
         expect(firstClaim.decoded).toBe('"https://issuer.example"');
 
-        const degreeClaim = result.parsedResult.issuedPayload[1];
+        const degreeClaim = result.parsedResult.payload[1];
         expect(degreeClaim.claim).toBe("vc.degree.type");
         expect(degreeClaim.decoded).toBe('"BachelorDegree"');
 
@@ -48,7 +48,7 @@ describe("validateJWP", () => {
 
     it("should reject issued JWP with invalid format", () => {
       const invalidJwp = "header.payload";
-      const result = validateJWP("issued", invalidJwp);
+      const result = validateIssuedForm(invalidJwp);
 
       expect(result.success).toBe(false);
       if (!result.success) {
@@ -59,7 +59,7 @@ describe("validateJWP", () => {
 
   describe("Presented JWP validation", () => {
     it("should validate a properly formatted presented JWP token", () => {
-      const result = validateJWP("presented", validPresentedJwp);
+      const result = validatePresentedForm(validPresentedJwp);
       expect(result.success).toBe(true);
 
       if (result.success && result.type === "presented") {
@@ -75,27 +75,25 @@ describe("validateJWP", () => {
         );
 
         // Verify issuer header
-        expect(result.parsedResult.issuedProtectedHeader).toBeDefined();
-        expect(result.parsedResult.issuedProtectedHeader.typ).toBe("JPT");
-        expect(result.parsedResult.issuedProtectedHeader.alg).toBe("BBS");
-        expect(result.parsedResult.issuedProtectedHeader.claims).toBeInstanceOf(
+        expect(result.parsedResult.issuerProtectedHeader).toBeDefined();
+        expect(result.parsedResult.issuerProtectedHeader.typ).toBe("JPT");
+        expect(result.parsedResult.issuerProtectedHeader.alg).toBe("BBS");
+        expect(result.parsedResult.issuerProtectedHeader.claims).toBeInstanceOf(
           Array,
         );
 
         // Verify payloads
-        expect(result.parsedResult.issuedPayload).toHaveLength(6);
+        expect(result.parsedResult.payload).toHaveLength(6);
 
         // Verify disclosed values (removing quotes)
-        expect(result.parsedResult.issuedPayload[0].decoded).toBe(
+        expect(result.parsedResult.payload[0].decoded).toBe(
           '"https://issuer.example"',
         );
-        expect(result.parsedResult.issuedPayload[1].decoded).toBe(
-          '"BachelorDegree"',
-        );
+        expect(result.parsedResult.payload[1].decoded).toBe('"BachelorDegree"');
 
         // Verify undisclosed values
-        expect(result.parsedResult.issuedPayload[2].decoded).toBe("");
-        expect(result.parsedResult.issuedPayload[3].decoded).toBe("");
+        expect(result.parsedResult.payload[2].decoded).toBe("");
+        expect(result.parsedResult.payload[3].decoded).toBe("");
 
         // Verify proof existence
         expect(result.parsedResult.proof).toBeDefined();
@@ -104,7 +102,7 @@ describe("validateJWP", () => {
 
     it("should reject presented JWP with invalid part count", () => {
       const invalidJwp = "header.payload.proof";
-      const result = validateJWP("presented", invalidJwp);
+      const result = validatePresentedForm(invalidJwp);
 
       expect(result.success).toBe(false);
       if (!result.success) {
