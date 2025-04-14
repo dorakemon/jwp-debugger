@@ -1,2 +1,1 @@
-// TO BE IMPLEMENTED
-export const IS_IMPLEMENTED = false;
+export { JWPEncoder } from "./components/main";

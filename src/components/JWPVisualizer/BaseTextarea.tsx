@@ -5,6 +5,7 @@ type BaseTextareaProps = {
   minRows?: number;
   wrap?: boolean;
   className?: string;
+  disabled?: boolean;
   children?: React.ReactNode;
   onChange?: (value: string) => void;
 };
@@ -16,6 +17,7 @@ export const BaseTextarea = ({
   value = "",
   minRows = 12,
   wrap = true,
+  disabled = false,
   className,
   onChange,
 }: BaseTextareaProps) => {
@@ -34,7 +36,7 @@ export const BaseTextarea = ({
   useEffect(() => {
     adjustHeight();
   }, [adjustHeight]);
-
+  // cursor帰る
   return (
     <textarea
       ref={textareaRef}
@@ -43,12 +45,13 @@ export const BaseTextarea = ({
       autoCorrect="off"
       autoCapitalize="none"
       spellCheck="false"
-      className={`w-full resize-none overflow-y-auto p-4 text-xs focus:outline-none ${
+      className={`w-full resize-none overflow-y-auto p-4 text-xs focus:outline-none cursor-text ${
         !wrap ? "overflow-x-auto whitespace-nowrap" : ""
       } ${className}`}
       style={{
         whiteSpace: wrap ? "pre-wrap" : "pre",
       }}
+      disabled={disabled}
       rows={minRows}
       onChange={(e) => {
         onChange?.(e.target.value);

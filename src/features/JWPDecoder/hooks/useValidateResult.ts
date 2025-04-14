@@ -1,5 +1,5 @@
+import { validateIssuedForm, validatePresentedForm } from "@/libs/validate";
 import { useDebuggerStore } from "@/store/context";
-import { validateIssuedForm, validatePresentedForm } from "../libs/validate";
 
 export const useValidateResult = () => {
   const { issuedFormJWP, presentedFormJWP } = useDebuggerStore();

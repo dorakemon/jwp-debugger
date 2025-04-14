@@ -4,12 +4,14 @@ const COLORS = ["green", "purple", "black", "blue"];
 
 export type PresentedJWPTextareaProps = {
   value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
 };
 
 export const PresentedJWPTextarea: React.FC<PresentedJWPTextareaProps> = ({
   value,
-  onChange,
+  onChange = () => {},
+  disabled,
 }) => {
   const parts = value.split(".");
 
@@ -36,6 +38,7 @@ export const PresentedJWPTextarea: React.FC<PresentedJWPTextareaProps> = ({
         value={value}
         onChange={onChange}
         minRows={12}
+        disabled={disabled}
         className="relative bg-transparent p-4 font-mono text-transparent text-xs caret-black "
       />
     </div>

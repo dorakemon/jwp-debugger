@@ -1,6 +1,6 @@
+import { checkJWK } from "@/libs/verify/checkJWK";
+import { verifyIssuedJwp, verifyPresentedJwp } from "@/libs/verify/verifyJWP";
 import { useDebuggerStore } from "@/store/context";
-import { checkJWK } from "../libs/verify/checkJWK";
-import { verifyIssuedJwp, verifyPresentedJwp } from "../libs/verify/verifyJWP";
 
 export const useVerifyResult = (jwkString?: string) => {
   const { issuedFormJWP, presentedFormJWP } = useDebuggerStore();

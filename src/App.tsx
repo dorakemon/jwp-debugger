@@ -2,6 +2,7 @@ import { useState } from "react";
 import { DebuggerDescription, DebuggerHeader } from "./components/Debugger";
 import { Header } from "./components/Layout";
 import { JWPDecoder } from "./features/JWPDecoder";
+import { JWPEncoder } from "./features/JWPEncoder";
 import { cn } from "./libs/tailwindUtils";
 import { DebuggerStore } from "./store/context";
 
@@ -36,6 +37,7 @@ const App = () => {
             </button>
           </div>
           {activeTab === "decoder" && <JWPDecoder />}
+          {activeTab === "encoder" && <JWPEncoder />}
         </div>
       </div>
     </DebuggerStore>
