@@ -20,7 +20,7 @@ export const verifyIssuedJwp = (jwk: string, jwp: string): VerifyResult => {
     publicJwkInstance.free();
     return { verified: result };
   } catch (error) {
-    return { verified: false, message: error };
+    return { verified: false, message: String(error) };
   }
 };
 
@@ -37,6 +37,6 @@ export const verifyPresentedJwp = (jwk: string, jwp: string): VerifyResult => {
     publicJwkInstance.free();
     return { verified: result };
   } catch (error) {
-    return { verified: false, message: error };
+    return { verified: false, message: String(error) };
   }
 };
