@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
 type BaseTextareaProps = {
-  defaultValue?: string;
+  value?: string;
   minRows?: number;
   wrap?: boolean;
   className?: string;
@@ -13,10 +13,10 @@ type BaseTextareaProps = {
  * Auto-resizing textarea component that adjusts its height based on content
  */
 export const BaseTextarea = ({
+  value = "",
   minRows = 12,
   wrap = true,
   className,
-  children,
   onChange,
 }: BaseTextareaProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -38,6 +38,7 @@ export const BaseTextarea = ({
   return (
     <textarea
       ref={textareaRef}
+      value={value}
       autoComplete="off"
       autoCorrect="off"
       autoCapitalize="none"
@@ -53,8 +54,6 @@ export const BaseTextarea = ({
         onChange?.(e.target.value);
         adjustHeight();
       }}
-    >
-      {children}
-    </textarea>
+    />
   );
 };

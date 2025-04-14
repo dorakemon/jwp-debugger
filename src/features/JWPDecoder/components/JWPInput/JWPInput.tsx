@@ -1,5 +1,8 @@
 import { CardWithTabsTitle, CardWithTextTitle } from "@/components/Card";
-import { BaseTextarea } from "@/components/JWPVisualizer/BaseTextarea";
+import {
+  IssuedJWPTextarea,
+  PresentedJWPTextarea,
+} from "@/components/JWPVisualizer";
 import { StatusBanner } from "@/components/StatusBanner";
 import { useDebuggerStore } from "@/store/context";
 import { useMemo } from "react";
@@ -92,9 +95,10 @@ export const JWPInput = ({
               }}
             >
               {IssuedJwpStatusBanners}
-              <BaseTextarea onChange={setIssuedFormJWP}>
-                {issuedFormJWP}
-              </BaseTextarea>
+              <IssuedJWPTextarea
+                value={issuedFormJWP}
+                onChange={setIssuedFormJWP}
+              />
             </CardWithTextTitle>
             <CardWithTextTitle
               title={IssuedOrPresentedTabs.presented}
@@ -104,9 +108,10 @@ export const JWPInput = ({
               }}
             >
               {PresentedJwpStatusBanners}
-              <BaseTextarea onChange={setPresentedFormJWP}>
-                {presentedFormJWP}
-              </BaseTextarea>
+              <PresentedJWPTextarea
+                value={presentedFormJWP}
+                onChange={setPresentedFormJWP}
+              />
             </CardWithTextTitle>
           </>
         ) : (
@@ -122,16 +127,20 @@ export const JWPInput = ({
             {issuedOrPresented === "issued" ? (
               <>
                 {IssuedJwpStatusBanners}
-                <BaseTextarea onChange={setIssuedFormJWP} key="issued">
-                  {issuedFormJWP}
-                </BaseTextarea>
+                <IssuedJWPTextarea
+                  value={issuedFormJWP}
+                  onChange={setIssuedFormJWP}
+                  key="issued"
+                />
               </>
             ) : (
               <>
                 {PresentedJwpStatusBanners}
-                <BaseTextarea onChange={setPresentedFormJWP} key="presented">
-                  {presentedFormJWP}
-                </BaseTextarea>
+                <PresentedJWPTextarea
+                  value={presentedFormJWP}
+                  onChange={setPresentedFormJWP}
+                  key="presented"
+                />
               </>
             )}
           </CardWithTabsTitle>

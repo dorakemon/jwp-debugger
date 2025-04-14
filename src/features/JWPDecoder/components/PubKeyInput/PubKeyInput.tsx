@@ -13,9 +13,12 @@ export const PubKeyInput = ({ publicKeyString }: PubKeyInputProps) => {
       </div>
       <div className="flex flex-col space-y-4">
         <CardWithTextTitle title={"Public Key"}>
-          <BaseTextarea className="font-medium" wrap={false} minRows={7}>
-            {publicKeyString}
-          </BaseTextarea>
+          <BaseTextarea
+            value={publicKeyString}
+            className="font-medium"
+            wrap={false}
+            minRows={7}
+          />
         </CardWithTextTitle>
       </div>
     </div>

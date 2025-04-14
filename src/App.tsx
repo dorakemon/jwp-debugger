@@ -26,7 +26,6 @@ const App = () => {
             <button
               className={cn(
                 "py-2 px-4 font-bold text-lg",
-                "rounded-none outline-none focus:outline-none",
                 activeTab === "decoder" && "border-b-2 border-black",
               )}
               onClick={() => setActiveTab("decoder")}
@@ -38,7 +37,6 @@ const App = () => {
                 <button
                   className={cn(
                     "py-2 px-4 font-bold text-lg text-gray-400",
-                    "rounded-none outline-none focus:outline-none",
                     activeTab === "encoder" && "border-b-2 border-black",
                   )}
                 >
