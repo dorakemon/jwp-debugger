@@ -4,6 +4,7 @@ type CardWithTextTitleProps = {
   title: string;
   children: React.ReactNode;
   isActive?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
 };
 
@@ -11,6 +12,7 @@ export const CardWithTextTitle: React.FC<CardWithTextTitleProps> = ({
   title,
   children,
   isActive,
+  disabled,
   onClick,
 }) => {
   return (
@@ -20,6 +22,7 @@ export const CardWithTextTitle: React.FC<CardWithTextTitleProps> = ({
       }
       BodyComponent={children}
       isActive={isActive}
+      disabled={disabled}
       onClick={onClick}
     />
   );

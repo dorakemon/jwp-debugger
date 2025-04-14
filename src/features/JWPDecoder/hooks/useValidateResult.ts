@@ -8,41 +8,54 @@ export const useValidateResult = () => {
   const presentedFormJWPValidateResult =
     validatePresentedForm(presentedFormJWP);
 
-  const getIssuedFormattedData = () => {
+  const getIssuedFormattedData = (): {
+    isValid: boolean;
+    validationError: string;
+    issuerHeader: string;
+    payloads: {
+      raw: string;
+      decoded: string;
+      claim: string;
+    }[];
+  } => {
     if (!issuedFormJWPValidateResult.success)
       return {
         isValid: false,
         validationError: issuedFormJWPValidateResult.message,
-        header: "",
-        payloads: "",
+        issuerHeader: "",
+        payloads: [],
       };
 
     return {
       isValid: true,
       validationError: "",
-      header: JSON.stringify(
+      issuerHeader: JSON.stringify(
         issuedFormJWPValidateResult.parsedResult.issuerProtectedHeader,
         null,
         2,
       ),
-      payloads: JSON.stringify(
-        issuedFormJWPValidateResult.parsedResult.payload.map(
-          (value) => value.decoded,
-        ),
-        null,
-        2,
-      ),
+      payloads: issuedFormJWPValidateResult.parsedResult.payload,
     };
   };
 
-  const getPresentedFormattedData = () => {
+  const getPresentedFormattedData = (): {
+    isValid: boolean;
+    validationError: string;
+    issuerHeader: string;
+    presentationHeader: string;
+    payloads: {
+      raw: string;
+      decoded: string;
+      claim: string;
+    }[];
+  } => {
     if (!presentedFormJWPValidateResult.success)
       return {
         isValid: false,
         validationError: presentedFormJWPValidateResult.message,
         issuerHeader: "",
         presentationHeader: "",
-        payloads: "",
+        payloads: [],
       };
 
     return {
@@ -58,13 +71,7 @@ export const useValidateResult = () => {
         null,
         2,
       ),
-      payloads: JSON.stringify(
-        presentedFormJWPValidateResult.parsedResult.payload.map(
-          (value) => value.decoded,
-        ),
-        null,
-        2,
-      ),
+      payloads: presentedFormJWPValidateResult.parsedResult.payload,
     };
   };
 

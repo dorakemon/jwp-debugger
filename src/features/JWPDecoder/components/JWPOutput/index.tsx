@@ -1,1 +1,2 @@
-export { JWPOutput } from "./JWPOutput";
+export { HeaderOutput } from "./HeaderOutput";
+export { PayloadOutput } from "./PayloadOutput";

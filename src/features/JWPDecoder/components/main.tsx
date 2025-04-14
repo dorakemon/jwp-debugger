@@ -2,7 +2,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSelectIssuedOrPresented } from "../hooks/useSelectIssuedOrPresented";
 import { useValidateResult } from "../hooks/useValidateResult";
 import { JWPInput } from "./JWPInput";
-import { JWPOutput } from "./JWPOutput";
+import { HeaderOutput, PayloadOutput } from "./JWPOutput";
 import { PubKeyInput } from "./PubKeyInput";
 
 export const JWPDecoder = () => {
@@ -44,31 +44,28 @@ export const JWPDecoder = () => {
         <div
           className={`${isMobile ? "w-full" : "w-1/2"} flex flex-col space-y-4`}
         >
+          <div className="text-sm font-medium mb-2">DECODED HEADER</div>
           {issuedOrPresented === "issued" ? (
             <>
-              <JWPOutput
-                title="DECODED ISSUER PROTECTED HEADER"
-                encodedValue={issuedData.header}
+              <HeaderOutput
+                title="ISSUER PROTECTED HEADER"
+                encodedValue={issuedData.issuerHeader}
               />
-              <JWPOutput
-                title="DECODED ISSUER PAYLOADS"
-                encodedValue={issuedData.payloads}
-              />
+              <div className="text-sm font-medium mb-2">DECODED PAYLOAD</div>
+              <PayloadOutput payload={issuedData.payloads ?? []} />
             </>
           ) : (
             <>
-              <JWPOutput
-                title="DECODED ISSUER PROTECTED HEADER"
+              <HeaderOutput
+                title="ISSUER PROTECTED HEADER"
                 encodedValue={presentedData.issuerHeader}
               />
-              <JWPOutput
-                title="DECODED PRESENTED PROTECTED HEADER"
+              <HeaderOutput
+                title="PRESENTED PROTECTED HEADER"
                 encodedValue={presentedData.presentationHeader}
               />
-              <JWPOutput
-                title="DECODED PRESENTATION PAYLOADS"
-                encodedValue={presentedData.payloads}
-              />
+              <div className="text-sm font-medium mb-2">DECODED PAYLOAD</div>
+              <PayloadOutput payload={presentedData.payloads ?? []} />
             </>
           )}
           <PubKeyInput

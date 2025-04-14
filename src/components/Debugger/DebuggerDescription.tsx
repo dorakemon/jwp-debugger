@@ -17,7 +17,7 @@ const SpecList = [
 
 export const DebuggerDescription = () => {
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8 flex flex-col">
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 lg:p-6 mb-8 flex flex-col">
       <span>
         JSON Web Proof (JWP) is a specification under development by the IETF
         JOSE Working Group.
