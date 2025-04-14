@@ -86,7 +86,7 @@ export const JSONVisualize = ({
 
   return (
     <div
-      className={`font-mono text-sm overflow-auto max-h-screen ${className}`}
+      className={`font-mono text-xs overflow-auto max-h-screen ${className}`}
     >
       {renderValue(parsedData)}
     </div>

@@ -16,10 +16,10 @@ export const PayloadOutput = ({ payload }: PayloadOutputProps) => {
             <tbody>
               {payload.map((item, index) => (
                 <tr key={index} className="border-t border-gray-200">
-                  <td className="py-3 px-4 text-sm font-medium whitespace-nowrap border-r border-gray-200 w-1/4">
+                  <td className="py-2 px-4 text-xs font-medium whitespace-nowrap border-r border-gray-200 w-1/4">
                     {item.claim}
                   </td>
-                  <td className="py-3 px-4 text-sm w-1/2 bg-gray-50">
+                  <td className="py-2 px-4 text-xs w-1/2 bg-gray-50">
                     {item.decoded}
                   </td>
                 </tr>
