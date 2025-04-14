@@ -18,7 +18,7 @@ export const CardWithTextTitle: React.FC<CardWithTextTitleProps> = ({
   return (
     <BaseCard
       TitleComponent={
-        <div className="text-sm font-medium pl-4 py-2">{title}</div>
+        <div className="py-2 pl-4 font-medium text-sm">{title}</div>
       }
       BodyComponent={children}
       isActive={isActive}

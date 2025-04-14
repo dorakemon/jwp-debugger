@@ -15,7 +15,7 @@ export const PubKeyInput = ({
 }: PubKeyInputProps) => {
   return (
     <div>
-      <div className="text-sm font-medium mb-2">
+      <div className="mb-2 font-medium text-sm">
         JWP Proof Verification (Optional)
       </div>
       <div className="flex flex-col space-y-4">

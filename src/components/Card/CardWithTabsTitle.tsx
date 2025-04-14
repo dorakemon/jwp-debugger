@@ -22,9 +22,9 @@ export const CardWithTabsTitle: React.FC<CardWithTabsTitleProps> = ({
           {Object.entries(tabTitles).map(([key, tabTitle]) => (
             <button
               key={key}
-              className={`py-2 px-4 mr-2 text-sm ${
+              className={`mr-2 px-4 py-2 text-sm ${
                 activeTabKey === key
-                  ? "text-blue-500 border-b-2 border-blue-500"
+                  ? "border-blue-500 border-b-2 text-blue-500"
                   : "text-gray-500"
               }`}
               onClick={() => onTabClick(key)}

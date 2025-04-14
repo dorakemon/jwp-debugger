@@ -78,7 +78,7 @@ export const JSONVisualize = ({
 
   if (parsedData.error) {
     return (
-      <div className="text-red-600 p-4 bg-red-50 rounded">
+      <div className="rounded bg-red-50 p-4 text-red-600">
         {parsedData.error}
       </div>
     );
@@ -86,7 +86,7 @@ export const JSONVisualize = ({
 
   return (
     <div
-      className={`font-mono text-xs overflow-auto max-h-screen ${className}`}
+      className={`max-h-screen overflow-auto font-mono text-xs ${className}`}
     >
       {renderValue(parsedData)}
     </div>

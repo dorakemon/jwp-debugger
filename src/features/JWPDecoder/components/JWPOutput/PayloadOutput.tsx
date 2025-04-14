@@ -15,11 +15,11 @@ export const PayloadOutput = ({ payload }: PayloadOutputProps) => {
           <table className="w-full border-collapse">
             <tbody>
               {payload.map((item, index) => (
-                <tr key={index} className="border-t border-gray-200">
-                  <td className="py-2 px-4 text-xs font-medium whitespace-nowrap border-r border-gray-200 w-1/4">
+                <tr key={index} className="border-gray-200 border-t">
+                  <td className="w-1/4 whitespace-nowrap border-gray-200 border-r px-4 py-2 font-medium text-xs">
                     {item.claim}
                   </td>
-                  <td className="py-2 px-4 text-xs w-1/2 bg-gray-50">
+                  <td className="w-1/2 bg-gray-50 px-4 py-2 text-xs">
                     {item.decoded}
                   </td>
                 </tr>
@@ -48,7 +48,7 @@ export const PayloadOutput = ({ payload }: PayloadOutputProps) => {
       return (
         <div className="p-4">
           {payload && (
-            <pre className="text-sm whitespace-pre overflow-x-auto">
+            <pre className="overflow-x-auto whitespace-pre text-sm">
               {JSON.stringify(
                 payload.map((item) => item.raw),
                 null,

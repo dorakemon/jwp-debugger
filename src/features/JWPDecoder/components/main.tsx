@@ -26,7 +26,7 @@ export const JWPDecoder = () => {
 
   return (
     <div>
-      <div className="font-light16 text-sm mb-4">
+      <div className="mb-4 font-light16 text-sm">
         Paste a JWP below that you'd like to decode, validate, and verify.
       </div>
       <div
@@ -55,14 +55,14 @@ export const JWPDecoder = () => {
         <div
           className={`${isMobile ? "w-full" : "w-1/2"} flex flex-col space-y-4`}
         >
-          <div className="text-sm font-medium mb-2">DECODED HEADER</div>
+          <div className="mb-2 font-medium text-sm">DECODED HEADER</div>
           {issuedOrPresented === "issued" ? (
             <>
               <HeaderOutput
                 title="ISSUER PROTECTED HEADER"
                 encodedValue={issuedData.issuerHeader}
               />
-              <div className="text-sm font-medium mb-2">DECODED PAYLOAD</div>
+              <div className="mb-2 font-medium text-sm">DECODED PAYLOAD</div>
               <PayloadOutput payload={issuedData.payloads ?? []} />
             </>
           ) : (
@@ -75,7 +75,7 @@ export const JWPDecoder = () => {
                 title="PRESENTATION PROTECTED HEADER"
                 encodedValue={presentedData.presentationHeader}
               />
-              <div className="text-sm font-medium mb-2">DECODED PAYLOAD</div>
+              <div className="mb-2 font-medium text-sm">DECODED PAYLOAD</div>
               <PayloadOutput payload={presentedData.payloads ?? []} />
             </>
           )}

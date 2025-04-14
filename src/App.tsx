@@ -1,9 +1,3 @@
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/shadcn/popover";
-import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { DebuggerDescription, DebuggerHeader } from "./components/Debugger";
 import { Header } from "./components/Layout";
@@ -12,48 +6,34 @@ import { cn } from "./libs/tailwindUtils";
 import { DebuggerStore } from "./store/context";
 
 const App = () => {
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"decoder" | "encoder">("decoder");
 
   return (
     <DebuggerStore>
-      <div className="bg-white text-gray-800 min-h-screen antialiased">
+      <div className="min-h-screen bg-white text-gray-800 antialiased">
         <Header />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <DebuggerHeader />
           <DebuggerDescription />
-          <div className="flex mb-2 border-b">
+          <div className="mb-2 flex border-b">
             <button
               className={cn(
-                "py-2 px-4 font-bold text-lg",
-                activeTab === "decoder" && "border-b-2 border-black",
+                "px-4 py-2 font-bold text-gray-400 text-lg",
+                activeTab === "decoder" && "border-black border-b-2 text-black",
               )}
               onClick={() => setActiveTab("decoder")}
             >
               JWP Decoder
             </button>
-            <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-              <PopoverTrigger asChild>
-                <button
-                  className={cn(
-                    "py-2 px-4 font-bold text-lg text-gray-400",
-                    activeTab === "encoder" && "border-b-2 border-black",
-                  )}
-                >
-                  JWP Encoder
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 p-0">
-                <div className="bg-red-50 border border-red-200 rounded-md p-4">
-                  <div className="flex items-center">
-                    <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-                    <p className="text-red-700 font-medium">
-                      This feature is not implemented yet
-                    </p>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
+            <button
+              className={cn(
+                "px-4 py-2 font-bold text-gray-400 text-lg",
+                activeTab === "encoder" && "border-black border-b-2 text-black",
+              )}
+              onClick={() => setActiveTab("encoder")}
+            >
+              JWP Encoder
+            </button>
           </div>
           {activeTab === "decoder" && <JWPDecoder />}
         </div>

@@ -25,8 +25,8 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({
   };
 
   return (
-    <div className={`font-sans ${colorProfile[status].bg} text-sm border-b`}>
-      <div className={`py-2 px-4 ${colorProfile[status].text}`}>{children}</div>
+    <div className={`font-sans ${colorProfile[status].bg} border-b text-sm`}>
+      <div className={`px-4 py-2 ${colorProfile[status].text}`}>{children}</div>
     </div>
   );
 };

@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest",
-    "check": "biome check",
-    "check:fix": "biome check --fix .",
+    "check": "biome check --unsafe",
+    "check:fix": "biome check --fix --unsafe .",
     "preview": "vite preview"
   },
   "dependencies": {

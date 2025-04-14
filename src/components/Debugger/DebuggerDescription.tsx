@@ -17,18 +17,18 @@ const SpecList = [
 
 export const DebuggerDescription = () => {
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 lg:p-6 mb-8 flex flex-col">
+    <div className="mb-8 flex flex-col rounded-xl border border-gray-200 bg-gray-50 p-4 lg:p-6">
       <span>
         JSON Web Proof (JWP) is a specification under development by the IETF
         JOSE Working Group.
       </span>
       <span>JWP and its related specifications are listed below.</span>
-      <ul className="pl-4 my-4">
+      <ul className="my-4 pl-4">
         {SpecList.map((spec) => (
           <li key={spec.url} className="text-gray-700">
             <a
               href={spec.url}
-              className="text-blue-600 hover:text-blue-800 transition-colors duration-200 hover:underline"
+              className="text-blue-600 transition-colors duration-200 hover:text-blue-800 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -37,13 +37,13 @@ export const DebuggerDescription = () => {
           </li>
         ))}
       </ul>
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
         <div className="flex">
           <div className="flex-shrink-0">
             <AlertTriangleIcon className="h-5 w-5 text-yellow-800" />
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-bold text-yellow-800">
+            <h3 className="font-bold text-sm text-yellow-800">
               Important Notice
             </h3>
             <div className="mt-2 text-sm text-yellow-700">

@@ -17,7 +17,7 @@ export const PresentedJWPTextarea: React.FC<PresentedJWPTextareaProps> = ({
     <div className="relative w-full">
       <pre
         aria-hidden="true"
-        className="pointer-events-none whitespace-pre-wrap break-words p-4 text-xs font-mono"
+        className="pointer-events-none whitespace-pre-wrap break-words p-4 font-mono text-xs"
         style={{
           position: "absolute",
           inset: 0,
@@ -36,10 +36,7 @@ export const PresentedJWPTextarea: React.FC<PresentedJWPTextareaProps> = ({
         value={value}
         onChange={onChange}
         minRows={12}
-        className="
-          relative bg-transparent p-4 text-xs font-mono
-          text-transparent caret-black
-        "
+        className="relative bg-transparent p-4 font-mono text-transparent text-xs caret-black "
       />
     </div>
   );

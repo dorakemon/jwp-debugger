@@ -43,8 +43,8 @@ export const BaseTextarea = ({
       autoCorrect="off"
       autoCapitalize="none"
       spellCheck="false"
-      className={`w-full resize-none focus:outline-none text-xs overflow-y-auto p-4 ${
-        !wrap ? "whitespace-nowrap overflow-x-auto" : ""
+      className={`w-full resize-none overflow-y-auto p-4 text-xs focus:outline-none ${
+        !wrap ? "overflow-x-auto whitespace-nowrap" : ""
       } ${className}`}
       style={{
         whiteSpace: wrap ? "pre-wrap" : "pre",

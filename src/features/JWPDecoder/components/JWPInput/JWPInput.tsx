@@ -83,7 +83,7 @@ export const JWPInput = ({
 
   return (
     <div>
-      <div className="text-sm font-medium mb-2">ENCODED JWP</div>
+      <div className="mb-2 font-medium text-sm">ENCODED JWP</div>
       <div className="flex flex-col space-y-4">
         {!isMobile ? (
           <>

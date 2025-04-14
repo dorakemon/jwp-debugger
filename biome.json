@@ -25,6 +25,9 @@
       },
       "suspicious": {
         "noArrayIndexKey": "off"
+      },
+      "nursery": {
+        "useSortedClasses": "error"
       }
     }
   },
