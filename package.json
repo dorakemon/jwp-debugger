@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "deploy": "vite build && vite preview",
     "check": "biome check",
     "check:fix": "biome check --fix .",
     "preview": "vite preview"
