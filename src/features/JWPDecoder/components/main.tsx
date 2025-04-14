@@ -61,7 +61,7 @@ export const JWPDecoder = () => {
                 encodedValue={presentedData.issuerHeader}
               />
               <HeaderOutput
-                title="PRESENTED PROTECTED HEADER"
+                title="PRESENTATION PROTECTED HEADER"
                 encodedValue={presentedData.presentationHeader}
               />
               <div className="text-sm font-medium mb-2">DECODED PAYLOAD</div>

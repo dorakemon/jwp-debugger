@@ -1,4 +1,5 @@
 import { CardWithTabsTitle } from "@/components/Card";
+import { JSONVisualize } from "@/components/JWPVisualizer/JSONVisualize";
 import { useMemo, useState } from "react";
 
 type PayloadOutputProps = {
@@ -32,13 +33,13 @@ export const PayloadOutput = ({ payload }: PayloadOutputProps) => {
       return (
         <div className="p-4">
           {payload && (
-            <pre className="text-sm whitespace-pre overflow-x-auto">
-              {JSON.stringify(
+            <JSONVisualize
+              jsonData={JSON.stringify(
                 payload.map((item) => item.decoded),
                 null,
                 2,
               )}
-            </pre>
+            />
           )}
         </div>
       );
