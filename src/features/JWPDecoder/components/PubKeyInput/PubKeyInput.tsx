@@ -4,9 +4,15 @@ import { StatusBanner } from "@/components/StatusBanner";
 
 type PubKeyInputProps = {
   publicKeyString?: string;
+  isValidJWK?: boolean;
+  onChange?: (value: string) => void;
 };
 
-export const PubKeyInput = ({ publicKeyString }: PubKeyInputProps) => {
+export const PubKeyInput = ({
+  publicKeyString,
+  isValidJWK,
+  onChange = () => {},
+}: PubKeyInputProps) => {
   return (
     <div>
       <div className="text-sm font-medium mb-2">
@@ -14,12 +20,17 @@ export const PubKeyInput = ({ publicKeyString }: PubKeyInputProps) => {
       </div>
       <div className="flex flex-col space-y-4">
         <CardWithTextTitle title={"Public Key"}>
-          <StatusBanner status="error">Not implemented yet</StatusBanner>
+          {isValidJWK ? (
+            <StatusBanner status="success">Public Key is valid</StatusBanner>
+          ) : (
+            <StatusBanner status="error">Invalid Public Key</StatusBanner>
+          )}
           <BaseTextarea
             value={publicKeyString}
             className="font-medium"
             wrap={false}
             minRows={7}
+            onChange={onChange}
           />
         </CardWithTextTitle>
       </div>

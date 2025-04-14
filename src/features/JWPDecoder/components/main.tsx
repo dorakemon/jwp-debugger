@@ -1,18 +1,28 @@
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDebuggerStore } from "@/store/context";
 import { useSelectIssuedOrPresented } from "../hooks/useSelectIssuedOrPresented";
 import { useValidateResult } from "../hooks/useValidateResult";
+import { useVerifyResult } from "../hooks/useVerifyResult";
 import { JWPInput } from "./JWPInput";
 import { HeaderOutput, PayloadOutput } from "./JWPOutput";
 import { PubKeyInput } from "./PubKeyInput";
 
 export const JWPDecoder = () => {
   const isMobile = useIsMobile();
+  const { jwk, setJwk } = useDebuggerStore();
   const { issuedOrPresented, handleSelectIssuedOrPresented } =
     useSelectIssuedOrPresented();
   const { getIssuedFormattedData, getPresentedFormattedData } =
     useValidateResult();
+  const {
+    isValidJWK,
+    getIssuedVerificationData,
+    getPresentedVerificationData,
+  } = useVerifyResult(jwk);
   const issuedData = getIssuedFormattedData();
   const presentedData = getPresentedFormattedData();
+  const issuedVerificationData = getIssuedVerificationData();
+  const presentedVerificationData = getPresentedVerificationData();
 
   return (
     <div>
@@ -30,14 +40,15 @@ export const JWPDecoder = () => {
             isseuedFormStatus={{
               isValid: issuedData.isValid,
               validationError: issuedData.validationError,
-              isVerified: false,
-              verificationError: "Not implemented yet",
+              isVerified: issuedVerificationData.isVerified,
+              verificationError: issuedVerificationData.verificationError ?? "",
             }}
             presentedFormStatus={{
               isValid: presentedData.isValid,
               validationError: presentedData.validationError,
-              isVerified: false,
-              verificationError: "Not implemented yet",
+              isVerified: presentedVerificationData.isVerified,
+              verificationError:
+                presentedVerificationData.verificationError ?? "",
             }}
           />
         </div>
@@ -69,17 +80,9 @@ export const JWPDecoder = () => {
             </>
           )}
           <PubKeyInput
-            publicKeyString={JSON.stringify(
-              {
-                kty: "EC",
-                crv: "BLS12381G2",
-                x: "FBTfTNT7JiPtxE32futIRKd4Y1PW26e09M55IRQ0Wp9WqwP6Th03fDtgwc14zyWxBAEsX06vLQ9Huh4YavayvSZRPS_il2OCXqAqQAmijbFb39lstaMy5bPKzwXtC-G0",
-                y: "DoS1pMjDSfJzmir0xdwq9-1cm705j7PZ-hOmRdoajzqkSQDen7mxDaVzxwuMFVVHEwkODf3IKaHnh1R59GqsVP9WPWfQ1ibDizjw-R5trpF2wF8FWeKCX9VSKmpf9nYI",
-                d: "KCdtD0YLaXK0ZbyVaZ0Fd51HnL4uZVS2lrM1Q6G3iJ4",
-              },
-              null,
-              2,
-            )}
+            publicKeyString={jwk}
+            isValidJWK={isValidJWK}
+            onChange={setJwk}
           />
         </div>
       </div>
