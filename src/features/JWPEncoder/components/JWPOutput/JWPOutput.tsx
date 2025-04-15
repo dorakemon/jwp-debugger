@@ -3,23 +3,17 @@ import {
   IssuedJWPTextarea,
   PresentedJWPTextarea,
 } from "@/components/JWPVisualizer";
+import { useDebuggerStore } from "@/store/context";
 
-type JWPOutputProps = {
-  issuedJwp: string;
-  presentedJwp: string;
-};
-
-export const JWPOutput: React.FC<JWPOutputProps> = ({
-  issuedJwp,
-  presentedJwp,
-}) => {
+export const JWPOutput = () => {
+  const { issuedFormJWP, presentedFormJWP } = useDebuggerStore();
   return (
     <>
       <CardWithTextTitle title="ISSUED FORM JWP" disabled>
-        <IssuedJWPTextarea value={issuedJwp} disabled minRows={20} />
+        <IssuedJWPTextarea value={issuedFormJWP} disabled minRows={20} />
       </CardWithTextTitle>
       <CardWithTextTitle title={"PRESENTED FORM JWP"} disabled>
-        <PresentedJWPTextarea value={presentedJwp} disabled minRows={20} />
+        <PresentedJWPTextarea value={presentedFormJWP} disabled minRows={20} />
       </CardWithTextTitle>
     </>
   );
