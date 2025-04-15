@@ -4,14 +4,19 @@ import { useState } from "react";
 type PayloadItem = {
   claim: string;
   decoded: string;
+  raw: string;
   disclosed: boolean;
 };
 
 type PayloadInputProps = {
   payload: PayloadItem[];
+  onChange?: (payload: PayloadItem[]) => void;
 };
 
-export const PayloadInput: React.FC<PayloadInputProps> = ({ payload }) => {
+export const PayloadInput: React.FC<PayloadInputProps> = ({
+  payload,
+  onChange,
+}) => {
   const [tableData, setTableData] = useState<PayloadItem[]>(payload);
 
   const handleDecodedChange = (index: number, newDecoded: string) => {
@@ -20,6 +25,7 @@ export const PayloadInput: React.FC<PayloadInputProps> = ({ payload }) => {
         i === index ? { ...item, decoded: newDecoded } : item,
       ),
     );
+    onChange?.(tableData);
   };
 
   const handleDisclosedChange = (index: number, newVal: boolean) => {

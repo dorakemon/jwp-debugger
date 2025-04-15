@@ -1,6 +1,7 @@
 import { useValidateResult } from "@/features/JWPDecoder/hooks/useValidateResult";
 import { useVerifyResult } from "@/features/JWPDecoder/hooks/useVerifyResult";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { generateIssuedAndPresentedJWP } from "@/libs/generate/generateJWP";
 import { useDebuggerStore } from "@/store/context";
 import { useMemo, useState } from "react";
 import { HeaderInput, PayloadInput, PrivKeyInput } from "./Input";
@@ -11,7 +12,7 @@ export const JWPEncoder = () => {
   const { getIssuedFormattedData, getPresentedFormattedData } =
     useValidateResult();
   const { isValidJWK } = useVerifyResult();
-  const { issuedFormJWP, presentedFormJWP, jwk } = useDebuggerStore();
+  const { jwk, setIssuedFormJWP, setPresentedFormJWP } = useDebuggerStore();
   const {
     initPresentationHeader,
     initIssuerHeader,
@@ -41,7 +42,28 @@ export const JWPEncoder = () => {
   const [presentationHeader, setPresentationHeader] = useState(
     initPresentationHeader,
   );
-  const [payloads] = useState(initPayloads);
+  const [payloads, setPayloads] = useState(initPayloads);
+
+  const { issued: generatedIssuedJwp, presented: generatedPresentedJwp } =
+    useMemo(() => {
+      const disclosedClaims = payloads.filter((item) => item.disclosed);
+      console.log("何変わった");
+      const result = generateIssuedAndPresentedJWP(
+        payloads,
+        presentationHeader,
+        disclosedClaims.map((item) => item.claim),
+        jwk,
+      );
+      setIssuedFormJWP(result.issued);
+      setPresentedFormJWP(result.presented);
+      return result;
+    }, [
+      payloads,
+      presentationHeader,
+      jwk,
+      setIssuedFormJWP,
+      setPresentedFormJWP,
+    ]);
 
   return (
     <div>
@@ -64,21 +86,19 @@ export const JWPEncoder = () => {
             value={presentationHeader}
             onChange={setPresentationHeader}
           />
-          <PayloadInput payload={payloads} />
+          <PayloadInput payload={payloads} onChange={setPayloads} />
           <PrivKeyInput
             privateKeyString={jwk}
             isValidJWK={isValidJWK}
-            onChange={() => {
-              console.log(isValidJWK);
-            }}
+            onChange={() => {}}
           />
         </div>
         <div
           className={`${isMobile ? "w-full" : "w-1/2"} flex flex-col space-y-4`}
         >
           <JWPOutput
-            issuedJwp={issuedFormJWP}
-            presentedJwp={presentedFormJWP}
+            issuedJwp={generatedIssuedJwp}
+            presentedJwp={generatedPresentedJwp}
           />
         </div>
       </div>
