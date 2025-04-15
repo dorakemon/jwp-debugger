@@ -1,5 +1,5 @@
 import { CardWithTextTitle } from "@/components/Card";
-import { JSONVisualize } from "@/components/JWPVisualizer";
+import { EditableJSON } from "@/components/JWPVisualizer";
 
 type HeaderOutputProps = {
   title: string;
@@ -15,7 +15,7 @@ export const HeaderOutput = ({ title, encodedValue }: HeaderOutputProps) => {
     <div className="flex flex-col space-y-4">
       <CardWithTextTitle title={title} disabled>
         <div className="p-4">
-          {encodedValue && <JSONVisualize jsonData={encodedValue} />}
+          {encodedValue && <EditableJSON jsonData={encodedValue} />}
         </div>
       </CardWithTextTitle>
     </div>

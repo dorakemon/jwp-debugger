@@ -1,11 +1,47 @@
+import { useValidateResult } from "@/features/JWPDecoder/hooks/useValidateResult";
+import { useVerifyResult } from "@/features/JWPDecoder/hooks/useVerifyResult";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDebuggerStore } from "@/store/context";
-import { HeaderInput } from "./Input";
+import { useMemo, useState } from "react";
+import { HeaderInput, PayloadInput, PrivKeyInput } from "./Input";
 import { JWPOutput } from "./JWPOutput";
 
 export const JWPEncoder = () => {
   const isMobile = useIsMobile();
-  const { issuedFormJWP, presentedFormJWP } = useDebuggerStore();
+  const { getIssuedFormattedData, getPresentedFormattedData } =
+    useValidateResult();
+  const { isValidJWK } = useVerifyResult();
+  const { issuedFormJWP, presentedFormJWP, jwk } = useDebuggerStore();
+  const {
+    initPresentationHeader,
+    initIssuerHeader,
+    initPayloads,
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  } = useMemo(() => {
+    const {
+      presentationHeader: initPresentationHeader,
+      payloads: presentationPayload,
+      issuerHeader: initIssuerHeader,
+    } = getPresentedFormattedData();
+    const { payloads: initPayloads } = getIssuedFormattedData();
+    const payloadWithDisclosed = initPayloads.map((item, index) => {
+      const disclosed = presentationPayload[index].decoded !== "";
+      return {
+        ...item,
+        disclosed,
+      };
+    });
+    return {
+      initPresentationHeader,
+      initIssuerHeader,
+      initPayloads: payloadWithDisclosed,
+    };
+  }, []);
+  const [issuerHeader, setIssuerHeader] = useState(initIssuerHeader);
+  const [presentationHeader, setPresentationHeader] = useState(
+    initPresentationHeader,
+  );
+  const [payloads] = useState(initPayloads);
 
   return (
     <div>
@@ -15,9 +51,25 @@ export const JWPEncoder = () => {
       <div
         className={`flex ${isMobile ? "flex-col space-y-6" : "flex-row space-x-6"} w-full`}
       >
-        <div className={`${isMobile ? "w-full" : "w-1/2"}`}>
-          <HeaderInput title="ISSUER PROTECTED HEADER" />
-          <HeaderInput title="PRESENTATION PROTECTED HEADER" />
+        <div
+          className={`${isMobile ? "w-full" : "w-1/2"} flex flex-col space-y-4`}
+        >
+          <HeaderInput
+            title="ISSUER PROTECTED HEADER"
+            value={issuerHeader}
+            onChange={setIssuerHeader}
+          />
+          <HeaderInput
+            title="PRESENTATION PROTECTED HEADER"
+            value={presentationHeader}
+            onChange={setPresentationHeader}
+          />
+          <PayloadInput payload={payloads} />
+          <PrivKeyInput
+            privateKeyString={jwk}
+            isValidJWK={isValidJWK}
+            onChange={() => {}}
+          />
         </div>
         <div
           className={`${isMobile ? "w-full" : "w-1/2"} flex flex-col space-y-4`}
@@ -26,11 +78,6 @@ export const JWPEncoder = () => {
             issuedJwp={issuedFormJWP}
             presentedJwp={presentedFormJWP}
           />
-          {/* <PubKeyInput
-            publicKeyString={jwk}
-            isValidJWK={isValidJWK}
-            onChange={setJwk}
-          /> */}
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { CardWithTextTitle } from "@/components/Card";
-import { JSONVisualize } from "@/components/JWPVisualizer";
+import { EditableJSON } from "@/components/JWPVisualizer";
+import { StatusBanner } from "@/components/StatusBanner";
 
 type HeaderInputProps = {
   title: string;
@@ -16,9 +17,14 @@ export const HeaderInput: React.FC<HeaderInputProps> = ({
   isValid,
   validationError,
 }) => {
-  <div className="flex flex-col space-y-4">
-    <CardWithTextTitle title={title} disabled>
-      <div className="p-4">{value && <JSONVisualize jsonData={value} />}</div>
+  return (
+    <CardWithTextTitle title={title}>
+      {!isValid && (
+        <StatusBanner status="error">{validationError}</StatusBanner>
+      )}
+      <div className="p-4">
+        <EditableJSON jsonData={value ?? ""} onChange={onChange} />
+      </div>
     </CardWithTextTitle>
-  </div>;
+  );
 };

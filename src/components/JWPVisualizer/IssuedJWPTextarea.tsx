@@ -1,17 +1,19 @@
 import { BaseTextarea } from "./BaseTextarea";
 
-const COLORS = ["green", "black", "blue"];
+const COLORS = ["text-green-700", "text-black", "text-blue-700"];
 
 export type IssuedJWPTextareaProps = {
   value: string;
   onChange?: (value: string) => void;
   disabled?: boolean;
+  minRows?: number;
 };
 
 export const IssuedJWPTextarea: React.FC<IssuedJWPTextareaProps> = ({
   value,
   onChange = () => {},
   disabled,
+  minRows = 12,
 }) => {
   const parts = value.split(".");
 
@@ -19,17 +21,12 @@ export const IssuedJWPTextarea: React.FC<IssuedJWPTextareaProps> = ({
     <div className="relative w-full">
       <pre
         aria-hidden="true"
-        className="pointer-events-none whitespace-pre-wrap break-words p-4 font-mono text-xs"
-        style={{
-          position: "absolute",
-          inset: 0,
-          color: "transparent",
-        }}
+        className="pointer-events-none absolute inset-0 whitespace-pre-wrap break-words p-4 font-mono text-sm text-transparent"
       >
         {parts.map((part, idx) => (
           <span key={idx}>
-            <span style={{ color: COLORS[idx] || "black" }}>{part}</span>
-            {idx < parts.length - 1 && <span style={{ color: "gray" }}>.</span>}
+            <span className={`${COLORS[idx] ?? "text-black"}`}>{part}</span>
+            {idx < parts.length - 1 && <span className="text-pink-600">.</span>}
           </span>
         ))}
       </pre>
@@ -37,9 +34,9 @@ export const IssuedJWPTextarea: React.FC<IssuedJWPTextareaProps> = ({
       <BaseTextarea
         value={value}
         onChange={onChange}
-        minRows={12}
+        minRows={minRows}
         disabled={disabled}
-        className="relative bg-transparent p-4 font-mono text-transparent text-xs caret-black "
+        className="relative bg-transparent p-4 font-mono text-sm text-transparent caret-black "
       />
     </div>
   );

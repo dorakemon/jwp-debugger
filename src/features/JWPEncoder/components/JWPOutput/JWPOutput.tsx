@@ -16,10 +16,10 @@ export const JWPOutput: React.FC<JWPOutputProps> = ({
   return (
     <>
       <CardWithTextTitle title="ISSUED FORM JWP" disabled>
-        <IssuedJWPTextarea value={issuedJwp} disabled />
+        <IssuedJWPTextarea value={issuedJwp} disabled minRows={20} />
       </CardWithTextTitle>
       <CardWithTextTitle title={"PRESENTED FORM JWP"} disabled>
-        <PresentedJWPTextarea value={presentedJwp} disabled />
+        <PresentedJWPTextarea value={presentedJwp} disabled minRows={20} />
       </CardWithTextTitle>
     </>
   );

@@ -48,13 +48,13 @@ export const PayloadOutput = ({ payload }: PayloadOutputProps) => {
       return (
         <div className="p-4">
           {payload && (
-            <pre className="overflow-x-auto whitespace-pre text-sm">
-              {JSON.stringify(
+            <JSONVisualize
+              jsonData={JSON.stringify(
                 payload.map((item) => item.raw),
                 null,
                 2,
               )}
-            </pre>
+            />
           )}
         </div>
       );

@@ -1,3 +1,4 @@
+import { cn } from "@/libs/tailwindUtils";
 import { useCallback, useEffect, useRef } from "react";
 
 type BaseTextareaProps = {
@@ -36,7 +37,7 @@ export const BaseTextarea = ({
   useEffect(() => {
     adjustHeight();
   }, [adjustHeight]);
-  // cursor帰る
+
   return (
     <textarea
       ref={textareaRef}
@@ -45,9 +46,11 @@ export const BaseTextarea = ({
       autoCorrect="off"
       autoCapitalize="none"
       spellCheck="false"
-      className={`w-full resize-none overflow-y-auto p-4 text-xs focus:outline-none cursor-text ${
-        !wrap ? "overflow-x-auto whitespace-nowrap" : ""
-      } ${className}`}
+      className={cn(
+        "w-full cursor-text resize-none overflow-y-auto text-xs focus:outline-none",
+        !wrap ? "overflow-x-auto whitespace-nowrap" : "",
+        className,
+      )}
       style={{
         whiteSpace: wrap ? "pre-wrap" : "pre",
       }}

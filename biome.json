@@ -27,7 +27,7 @@
         "noArrayIndexKey": "off"
       },
       "nursery": {
-        "useSortedClasses": "error"
+        "useSortedClasses": "warn"
       }
     }
   },
