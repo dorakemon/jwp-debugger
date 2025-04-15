@@ -2,25 +2,25 @@ import { checkJWK } from "@/libs/verify/checkJWK";
 import { verifyIssuedJwp, verifyPresentedJwp } from "@/libs/verify/verifyJWP";
 import { useDebuggerStore } from "@/store/context";
 
-export const useVerifyResult = (jwkString?: string) => {
-  const { issuedFormJWP, presentedFormJWP } = useDebuggerStore();
+export const useVerifyResult = () => {
+  const { jwk, issuedFormJWP, presentedFormJWP } = useDebuggerStore();
 
-  const isValidJWK = jwkString ? checkJWK(jwkString) : false;
+  const isValidJWK = jwk ? checkJWK(jwk) : false;
 
   const verifyIssuedJWPResult = () => {
-    if (!isValidJWK || !jwkString || !issuedFormJWP) {
+    if (!isValidJWK || !jwk || !issuedFormJWP) {
       return {
         isVerified: false,
         verificationError: !isValidJWK
           ? "Invalid JWK format"
-          : !jwkString
+          : !jwk
             ? "No JWK provided"
             : "No issued JWP provided",
       };
     }
 
     try {
-      const verificationResult = verifyIssuedJwp(jwkString, issuedFormJWP);
+      const verificationResult = verifyIssuedJwp(jwk, issuedFormJWP);
 
       return {
         isVerified: verificationResult.verified,
@@ -38,22 +38,19 @@ export const useVerifyResult = (jwkString?: string) => {
 
   // Verify presented JWP
   const verifyPresentedJWPResult = () => {
-    if (!isValidJWK || !jwkString || !presentedFormJWP) {
+    if (!isValidJWK || !jwk || !presentedFormJWP) {
       return {
         isVerified: false,
         verificationError: !isValidJWK
           ? "Invalid JWK format"
-          : !jwkString
+          : !jwk
             ? "No JWK provided"
             : "No presented JWP provided",
       };
     }
 
     try {
-      const verificationResult = verifyPresentedJwp(
-        jwkString,
-        presentedFormJWP,
-      );
+      const verificationResult = verifyPresentedJwp(jwk, presentedFormJWP);
 
       return {
         isVerified: verificationResult.verified,
@@ -70,7 +67,7 @@ export const useVerifyResult = (jwkString?: string) => {
   };
 
   const getIssuedVerificationData = () => {
-    if (!jwkString) {
+    if (!jwk) {
       return {
         isJwkValid: false,
         jwkError: "No JWK provided",
@@ -93,7 +90,7 @@ export const useVerifyResult = (jwkString?: string) => {
   };
 
   const getPresentedVerificationData = () => {
-    if (!jwkString) {
+    if (!jwk) {
       return {
         isJwkValid: false,
         jwkError: "No JWK provided",

@@ -18,7 +18,7 @@ export const JWPDecoder = () => {
     isValidJWK,
     getIssuedVerificationData,
     getPresentedVerificationData,
-  } = useVerifyResult(jwk);
+  } = useVerifyResult();
   const issuedData = getIssuedFormattedData();
   const presentedData = getPresentedFormattedData();
   const issuedVerificationData = getIssuedVerificationData();

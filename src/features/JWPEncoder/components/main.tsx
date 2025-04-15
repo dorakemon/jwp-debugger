@@ -68,7 +68,9 @@ export const JWPEncoder = () => {
           <PrivKeyInput
             privateKeyString={jwk}
             isValidJWK={isValidJWK}
-            onChange={() => {}}
+            onChange={() => {
+              console.log(isValidJWK);
+            }}
           />
         </div>
         <div
