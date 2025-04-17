@@ -7,54 +7,78 @@ import { HeaderInput } from "./HeaderInput";
 import { PayloadInput } from "./PayloadInput";
 import { PrivKeyInput } from "./PrivKeyInput";
 
+// FIXME: There is an isssue with header processing.
+
 export const EncoderInput = () => {
   const { isValidJWK } = useVerifyResult();
   const { jwk, setIssuedFormJWP, setPresentedFormJWP } = useDebuggerStore();
   const { getIssuedFormattedData, getPresentedFormattedData } =
     useValidateResult();
-  const {
-    initPresentationHeader,
-    initIssuerHeader,
-    initPayloads,
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  } = useMemo(() => {
+
+  const initialData = useMemo(() => {
     const {
       presentationHeader: initPresentationHeader,
       payloads: presentationPayload,
       issuerHeader: initIssuerHeader,
     } = getPresentedFormattedData();
     const { payloads: initPayloads } = getIssuedFormattedData();
-    const payloadWithDisclosed = initPayloads.map((item, index) => {
-      const disclosed = presentationPayload[index].decoded !== "";
-      return {
-        ...item,
-        disclosed,
-      };
+
+    const claims = initPayloads.map((item) => item.claim);
+    const decoded = initPayloads.map((item) => {
+      const value = item.decoded;
+      if (value.startsWith('"') && value.endsWith('"')) {
+        return value.slice(1, -1);
+      }
+      return value;
     });
+    const disclosed = presentationPayload.map((item) => item.decoded !== "");
+
+    console.log(JSON.stringify(decoded, null, 2));
     return {
       initPresentationHeader,
       initIssuerHeader,
-      initPayloads: payloadWithDisclosed,
+      payloadData: {
+        claims,
+        decodedString: JSON.stringify(decoded, null, 2),
+        disclosed,
+      },
     };
-  }, []);
-  const [issuerHeader, setIssuerHeader] = useState(initIssuerHeader);
-  const [presentationHeader, setPresentationHeader] = useState(
-    initPresentationHeader,
+  }, [getPresentedFormattedData, getIssuedFormattedData]);
+
+  const [issuerHeader, setIssuerHeader] = useState(
+    initialData.initIssuerHeader,
   );
-  const [payloads, setPayloads] = useState(initPayloads);
+  const [presentationHeader, setPresentationHeader] = useState(
+    initialData.initPresentationHeader,
+  );
+  const [payloads, setPayloads] = useState(initialData.payloadData);
 
   useMemo(() => {
-    const disclosedClaims = payloads.filter((item) => item.disclosed);
-    console.log("何変わった");
-    const result = generateIssuedAndPresentedJWP(
-      payloads,
-      presentationHeader,
-      disclosedClaims.map((item) => item.claim),
-      jwk,
-    );
-    setIssuedFormJWP(result.issued);
-    setPresentedFormJWP(result.presented);
-    return result;
+    try {
+      const decodedValues = JSON.parse(payloads.decodedString);
+      const formattedPayloads = payloads.claims.map((claim, index) => ({
+        claim,
+        decoded:
+          decodedValues[index] !== undefined
+            ? typeof decodedValues[index] === "object"
+              ? JSON.stringify(decodedValues[index])
+              : String(decodedValues[index])
+            : "",
+      }));
+      const undisclosedClaims = payloads.claims.filter(
+        (_, index) => !payloads.disclosed[index],
+      );
+      const result = generateIssuedAndPresentedJWP(
+        formattedPayloads,
+        presentationHeader,
+        undisclosedClaims,
+        jwk,
+      );
+      setIssuedFormJWP(result.issued);
+      setPresentedFormJWP(result.presented);
+    } catch (error) {
+      console.error("JWP Generation Error:", error);
+    }
   }, [
     payloads,
     presentationHeader,

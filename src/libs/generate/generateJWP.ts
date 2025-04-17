@@ -9,7 +9,7 @@ import {
 export const generateIssuedAndPresentedJWP = (
   payload: Array<{ claim: string; decoded: string }>,
   presentationProtectedHeaderString: string,
-  disclosedClaims: string[],
+  undisclosedClaims: string[],
   jwkString: string,
 ) => {
   const jwk = new Jwk(jwkString);
@@ -37,7 +37,7 @@ export const generateIssuedAndPresentedJWP = (
   const presentedJwp = new PresentedJwp(
     publicJwk,
     jwp,
-    disclosedClaims,
+    undisclosedClaims,
     aud,
     nonce,
   );
