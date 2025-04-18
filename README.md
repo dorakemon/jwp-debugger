@@ -1,3 +1,3 @@
-# React + TypeScript + Vite
+# jwp-debugger
 
-- npx playwright install  
+WIP
